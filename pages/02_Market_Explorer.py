@@ -110,7 +110,7 @@ def run_tradingview_screener(
             conditions.extend([col("price_earnings_ttm") > 0, col("price_earnings_ttm") <= 25])
         elif preset == "🏆 52-Week High Breakouts":
             conditions.extend([col("change") > 1.0, col("RSI") >= 60])
-        elif preset == "🛡️ Strong Buy Technical Consensus":
+        elif preset == "🛡️ Strongly Bullish Technical Consensus":
             conditions.append(col("Recommend.All") >= 0.3)
 
         # Numerical input condition filters
@@ -309,7 +309,7 @@ def build_head_to_head_matrix(
     name_a: str,
     name_b: str,
 ) -> pd.DataFrame:
-    """Compile comprehensive head-to-head comparison metrics merging snapshots and live market data."""
+    """Compile comprehensive head-to-head comparison metrics merging snapshots and market data."""
     rets_a = ca.pct_change().dropna()
     rets_b = cb.pct_change().dropna()
 
@@ -768,11 +768,11 @@ def run_tradingview_technical_screener(
             tech_conditions.append(col("close") >= col("BB.upper"))
 
         # Overall technical rating filter
-        if tech_rating == "Buy or Strong Buy (Rating > 0.1)":
+        if tech_rating == "Bullish or Strongly Bullish (Rating > 0.1)":
             tech_conditions.append(col("Recommend.All") >= 0.1)
-        elif tech_rating == "Strong Buy Only (Rating > 0.3)":
+        elif tech_rating == "Strongly Bullish Only (Rating > 0.3)":
             tech_conditions.append(col("Recommend.All") >= 0.3)
-        elif tech_rating == "Sell or Strong Sell (Rating < -0.1)":
+        elif tech_rating == "Bearish or Strongly Bearish (Rating < -0.1)":
             tech_conditions.append(col("Recommend.All") <= -0.1)
 
         if tech_conditions:
@@ -988,13 +988,13 @@ def compute_technical_features(df: pd.DataFrame) -> dict:
     overall_score = trend_score * 0.35 + mom_score * 0.25 + flow_score * 0.25 + volat_score * 0.15
 
     if overall_score >= 75:
-        overall_signal = "🚀 Strong Buy"
+        overall_signal = "🚀 Strongly Bullish"
     elif overall_score >= 60:
-        overall_signal = "🟢 Buy"
+        overall_signal = "🟢 Bullish"
     elif overall_score <= 30:
-        overall_signal = "🚨 Strong Sell"
+        overall_signal = "🚨 Strongly Bearish"
     elif overall_score <= 45:
-        overall_signal = "🔴 Sell"
+        overall_signal = "🔴 Bearish"
     else:
         overall_signal = "⚖️ Neutral"
 
@@ -1253,7 +1253,7 @@ def render_page():
             "👑 Large-Cap Quality Compounders",
             "💰 High Dividend Value",
             "🏆 52-Week High Breakouts",
-            "🛡️ Strong Buy Technical Consensus",
+            "🛡️ Strongly Bullish Technical Consensus",
         ]
 
         p_col1, p_col2, p_col3 = st.columns([1.1, 1.2, 1.7])
@@ -1458,7 +1458,7 @@ def render_page():
         # ---------------------------------------------------------------------
         # Execute Screener Query
         # ---------------------------------------------------------------------
-        with st.spinner("Executing real-time institutional screener scan…"):
+        with st.spinner("Executing market data institutional screener scan…"):
             total_matching, scr_df = run_tradingview_screener(
                 market=market_val,
                 exchange=ex_val,
@@ -1528,12 +1528,12 @@ def render_page():
             )
             table_df["Technical Rating"] = table_df["Recommend.All"].apply(
                 lambda x: (
-                    "Strong Buy"
+                    "Strongly Bullish"
                     if x >= 0.5
                     else (
-                        "Buy"
+                        "Bullish"
                         if x >= 0.1
-                        else ("Neutral" if x >= -0.1 else ("Sell" if x >= -0.5 else "Strong Sell"))
+                        else ("Neutral" if x >= -0.1 else ("Bearish" if x >= -0.5 else "Strongly Bearish"))
                     )
                 )
                 if pd.notna(x)
@@ -1748,7 +1748,7 @@ def render_page():
         elif stock_a_resolved == stock_b_resolved:
             st.warning("Please choose two different stocks to perform a head-to-head comparative analysis.")
         else:
-            with st.spinner(f"Fetching live market history and financial data for {stock_a_resolved} vs {stock_b_resolved}…"):
+            with st.spinner(f"Fetching market data history and financial data for {stock_a_resolved} vs {stock_b_resolved}…"):
                 raw_pair_data, info_a, info_b = fetch_comparison_pair_data(
                     stock_a_resolved, stock_b_resolved, period=comp_period, interval=comp_interval
                 )
@@ -2568,9 +2568,9 @@ def render_page():
                     "Technical Rating Consensus",
                     [
                         "Any",
-                        "Buy or Strong Buy (Rating > 0.1)",
-                        "Strong Buy Only (Rating > 0.3)",
-                        "Sell or Strong Sell (Rating < -0.1)",
+                        "Bullish or Strongly Bullish (Rating > 0.1)",
+                        "Strongly Bullish Only (Rating > 0.3)",
+                        "Bearish or Strongly Bearish (Rating < -0.1)",
                     ],
                     index=0,
                     key="tech_rating_sel",
@@ -2711,13 +2711,13 @@ def render_page():
                     return "—"
                 v = float(val)
                 if v >= 0.5:
-                    return "🚀 Strong Buy"
+                    return "🚀 Strongly Bullish"
                 elif v >= 0.1:
-                    return "🟢 Buy"
+                    return "🟢 Bullish"
                 elif v <= -0.5:
-                    return "🚨 Strong Sell"
+                    return "🚨 Strongly Bearish"
                 elif v <= -0.1:
-                    return "🔴 Sell"
+                    return "🔴 Bearish"
                 else:
                     return "⚖️ Neutral"
 
@@ -2818,11 +2818,11 @@ def render_page():
                 verdict_counts = disp_tech_df["Technical Verdict"].value_counts().reset_index()
                 verdict_counts.columns = ["Verdict", "Count"]
                 color_map = {
-                    "🚀 Strong Buy": "#10B981",
-                    "🟢 Buy": "#34D399",
+                    "🚀 Strongly Bullish": "#10B981",
+                    "🟢 Bullish": "#34D399",
                     "⚖️ Neutral": "#94A3B8",
-                    "🔴 Sell": "#F87171",
-                    "🚨 Strong Sell": "#EF4444",
+                    "🔴 Bearish": "#F87171",
+                    "🚨 Strongly Bearish": "#EF4444",
                 }
                 fig_rating_pie = px.pie(
                     verdict_counts,
@@ -3459,4 +3459,6 @@ def render_page():
 
 
 if __name__ == "__main__":
+    from utils.helper import render_disclaimer_footer
     render_page()
+    render_disclaimer_footer()

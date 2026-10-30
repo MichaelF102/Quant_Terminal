@@ -1624,3 +1624,7 @@ with st.expander("📑 Comprehensive Statistical Summary & Higher Moments", expa
 # Footer
 st.markdown("<div style='height: 18px;'></div>", unsafe_allow_html=True)
 st.caption("Quantitative equity return analytics terminal. Historical returns and distribution moments are empirical and do not guarantee future performance.")
+
+# Standard disclaimer footer
+from utils.helper import render_disclaimer_footer
+render_disclaimer_footer()

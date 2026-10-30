@@ -88,7 +88,7 @@ def load_ml_feature_importances() -> pd.DataFrame:
 
 @st.cache_data(show_spinner=False)
 def fetch_clean_stock_bars(ticker_str: str, period_str: str = "1y", interval_str: str = "1d") -> pd.DataFrame:
-    """Fetch and standardize historical price data for real-time inference."""
+    """Fetch and standardize historical price data for market data inference."""
     df_raw = load_data(ticker_str, period=period_str, interval=interval_str)
     df_clean = drop_holiday_nans(df_raw)
     if df_clean.empty:
@@ -1301,3 +1301,7 @@ with tab_arch:
 
 st.markdown("---")
 st.caption("QuantTerminal ML Forecasting Dashboard • Results loaded directly from `ml_dl/results/` and `ml_dl/models/`")
+
+# Standard disclaimer footer
+from utils.helper import render_disclaimer_footer
+render_disclaimer_footer()

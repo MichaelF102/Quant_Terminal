@@ -932,8 +932,8 @@ def render_strategy_architecture_visualizer(
             y=df.loc[long_dates, "Low"] * 0.985,
             mode="markers",
             marker=dict(symbol="triangle-up", size=11, color="#10B981", line=dict(width=1, color="#FFFFFF")),
-            name="Buy Entry (Signal +1)",
-            hovertemplate="<b>BUY ENTRY</b><br>Date: %{x|%Y-%m-%d}<br>Price: ₹%{y:,.2f}<extra></extra>",
+            name="Bullish Entry (Signal +1)",
+            hovertemplate="<b>BULLISH ENTRY</b><br>Date: %{x|%Y-%m-%d}<br>Price: ₹%{y:,.2f}<extra></extra>",
         ), row=1, col=1)
 
     if len(exit_dates) > 0:
@@ -3165,4 +3165,6 @@ class StrategyLabAlgorithm(QCAlgorithm):
 
 
 if __name__ == "__main__":
+    from utils.helper import render_disclaimer_footer
     render_page()
+    render_disclaimer_footer()

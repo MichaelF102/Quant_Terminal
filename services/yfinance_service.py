@@ -1,6 +1,6 @@
 """YFinance Data Service for QuantTerminal.
 
-Defensively extracts real-time quotes, OHLCV history, analyst consensus,
+Defensively extracts market data quotes, OHLCV history, analyst consensus,
 and financial statements with caching and error isolation.
 """
 
@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 @st.cache_data(ttl=300, show_spinner=False)
 def get_yfinance_quote(ticker: str) -> Dict[str, Any]:
-    """Fetch live market quote, valuation multiples, and company profile from Yahoo Finance."""
+    """Fetch market data quote, valuation multiples, and company profile from Yahoo Finance."""
     try:
         t = yf.Ticker(ticker)
         fast = t.fast_info
