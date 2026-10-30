@@ -137,7 +137,7 @@ PRESETS = {
             "Extended Target: Opposite Bollinger Band (Upper Band) if momentum accelerates.",
             "Time Stop: If price does not revert within 5 bars, close position to prevent trend transition risk."
         ],
-        "entry_exit": "Buy when price touches/pierces Lower Band with RSI < 30, Stochastic < 20, and Williams %R < -80 curling upward. Target is the 20-period Middle Band (mean).",
+        "entry_exit": "Bullish setup when price touches/pierces Lower Band with RSI < 30, Stochastic < 20, and Williams %R < -80 curling upward. Target is the 20-period Middle Band (mean).",
         "risk_management": "Hard stop set at 1.0x ATR below the extreme swing low. If a trend develops, exit without hesitation.",
         "pitfalls": "Attempting mean reversion during strong macroeconomic trends or earnings announcements causes catastrophic 'falling knife' losses."
     },
@@ -160,7 +160,7 @@ PRESETS = {
             "Fast Trailing Stop: Close below the 9-period EMA or Hull Moving Average (HMA).",
             "Exhaustion Target: RSI touching 80+ with bearish candlestick divergence."
         ],
-        "entry_exit": "Buy when RSI breaks above 60 with MACD histogram surging positively, ROC > 0, and price accelerating above HMA/EMA. Exit when momentum stalls.",
+        "entry_exit": "Bullish setup when RSI breaks above 60 with MACD histogram surging positively, ROC > 0, and price accelerating above HMA/EMA. Exit when momentum stalls.",
         "risk_management": "Tight trailing stop along short-term EMA/HMA. Risk capped at 1.0% of portfolio.",
         "pitfalls": "Late entries into parabolic moves. If RSI is already > 75 at entry, the risk/reward is unfavorable."
     },
@@ -206,7 +206,7 @@ PRESETS = {
             "VWAP Failure: Decisive breakdown and candle close below VWAP support.",
             "Climax Target: Extreme high volume (RVOL > 3x) at key resistance without price follow-through (exhaustion)."
         ],
-        "entry_exit": "Buy when price holds above VWAP with OBV making new relative highs, CMF > 0, and RVOL confirming institutional buying. Sell if price breaks below VWAP with heavy volume.",
+        "entry_exit": "Bullish setup when price holds above VWAP with OBV making new relative highs, CMF > 0, and RVOL confirming institutional buying. Bearish if price breaks below VWAP with heavy volume.",
         "risk_management": "Stop-loss anchored 0.5% below intraday/multi-day VWAP benchmark.",
         "pitfalls": "False accumulation readings on low volume holiday sessions. Always ensure absolute volume exceeds 20-day SMA."
     },
@@ -1800,4 +1800,6 @@ def render_page():
 
 
 if __name__ == "__main__":
+    from utils.helper import render_disclaimer_footer
     render_page()
+    render_disclaimer_footer()

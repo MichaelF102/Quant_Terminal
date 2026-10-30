@@ -466,7 +466,7 @@ with tab_plan:
         {"Phase": "Phase 0", "Duration": "Day 1 (½ day)", "Focus": "Kickoff, Environment Setup & Contract Freezing", "Key Milestone": "yfinance verified for NSE & US, MultiIndex standards agreed, loader API frozen."},
         {"Phase": "Phase 1", "Duration": "Days 1–3", "Focus": "Foundation & Core Sprint", "Key Milestone": "Data loader, cache, return calculators, and baseline trend indicators deployed in parallel."},
         {"Phase": "Phase 2", "Duration": "Days 4–14", "Focus": "Three Parallel Module Tracks", "Key Milestone": "Full strategy engines, volatility estimators, risk analytics, and shared vector charts built."},
-        {"Phase": "Phase 3", "Duration": "Days 15–24", "Focus": "Streamlit Pages Implementation", "Key Milestone": "19 specialized dashboards wired to core calculation engines with real-time reactive filters."},
+        {"Phase": "Phase 3", "Duration": "Days 15–24", "Focus": "Streamlit Pages Implementation", "Key Milestone": "19 specialized dashboards wired to core calculation engines with market data reactive filters."},
         {"Phase": "Phase 4", "Duration": "Days 25–30", "Focus": "Institutional 20-Page PDF & Platform Polish", "Key Milestone": "Clean PDF compilation, theme consistency, and Streamlit Cloud deployment readiness."}
     ]
     st.dataframe(pd.DataFrame(plan_data), width="stretch", hide_index=True)
@@ -489,3 +489,7 @@ st.markdown("""
     </div>
 </div>
 """, unsafe_allow_html=True)
+
+# Standard disclaimer footer
+from utils.helper import render_disclaimer_footer
+render_disclaimer_footer()

@@ -1974,3 +1974,7 @@ with tab_analysis:
 # Footer
 # ---------------------------------------------------------
 st.markdown("<div style='text-align: center; margin-top: 25px; color: #64748B; font-size: 0.76rem;'><i>QuantTerminal Econometric Terminal • Institutional time series suite with zero look-ahead bias. Not financial advice.</i></div>", unsafe_allow_html=True)
+
+# Standard disclaimer footer
+from utils.helper import render_disclaimer_footer
+render_disclaimer_footer()

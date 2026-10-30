@@ -32,7 +32,7 @@ _utils_dir = os.path.join(_current_dir, "utils")
 if _utils_dir not in sys.path:
     sys.path.insert(0, _utils_dir)
 
-from utils.helper import inject_custom_theme, CURRENCY_SYMBOLS
+from utils.helper import inject_custom_theme, CURRENCY_SYMBOLS, render_disclaimer_footer
 from utils.sidebar import render_sidebar
 
 # =============================================================================
@@ -65,7 +65,7 @@ MODULE_REGISTRY: List[Dict[str, Any]] = [
         "path": "pages/01_Dashboard.py",
         "description": "Consolidated multi-asset institutional equity research dashboard and performance monitor.",
         "features": [
-            "Real-time ticker metrics and volume",
+            "Market data ticker metrics and volume",
             "Key valuation and fundamental ratios",
             "Technical momentum summary indicators",
             "Multi-timeframe return distribution",
@@ -1259,7 +1259,7 @@ with col_data:
     st.markdown("""
     <div style="background: rgba(15, 23, 42, 0.75); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.25); min-height: 250px; height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between;">
         <div style="font-size: 0.85rem; color: #94A3B8; margin-bottom: 12px; line-height: 1.45;">
-            Market data ingested through live exchange feeds with automated calendar alignment and zero synthetic infilling:
+            Market data ingested through exchange market data feeds with automated calendar alignment and zero synthetic infilling:
         </div>
         <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.82rem;">
             <div style="display:flex; justify-content:space-between;"><span style="color:#94A3B8;">Primary Provider</span><span style="color:#F8FAFC; font-weight:600;">Yahoo Finance (yfinance)</span></div>
@@ -1274,7 +1274,80 @@ with col_data:
 st.markdown("<div style='height: 24px;'></div>", unsafe_allow_html=True)
 
 # =============================================================================
-# 13. Institutional Reporting Spotlight
+# 13. Terminal Use Cases
+# =============================================================================
+st.markdown("### 🎯 Terminal Use Cases")
+st.markdown(
+    "<div style='font-size: 0.88rem; color: #94A3B8; margin-bottom: 14px;'>"
+    "Typical educational and research workflows supported by QuantTerminal."
+    "</div>",
+    unsafe_allow_html=True,
+)
+
+USE_CASES: List[Dict[str, str]] = [
+    {
+        "icon": "🔎",
+        "title": "Equity Research & Screening",
+        "desc": "Screen NSE, BSE and US stocks by market cap, valuation and technical rating, then drill into fundamentals, price history and peer comparisons.",
+        "modules": "Dashboard • Market Explorer • Technical Analysis",
+        "color": "#3B82F6",
+    },
+    {
+        "icon": "📉",
+        "title": "Risk Measurement & Stress Testing",
+        "desc": "Quantify downside with Value-at-Risk, drawdown depth and volatility regimes, and stress outcomes with Monte Carlo simulation paths.",
+        "modules": "Volatility Lab • Risk Analytics • Monte Carlo",
+        "color": "#EF4444",
+    },
+    {
+        "icon": "🧪",
+        "title": "Strategy Design & Backtesting",
+        "desc": "Prototype rule-based strategies, compare them against buy-and-hold, and study the effect of costs and slippage on historical performance.",
+        "modules": "Strategy Lab • Backtesting • Statistical Arbitrage",
+        "color": "#8B5CF6",
+    },
+    {
+        "icon": "⚖️",
+        "title": "Portfolio Construction",
+        "desc": "Explore efficient frontiers, risk parity and hierarchical allocation, and examine how diversification changes risk and return.",
+        "modules": "Portfolio Lab • Return Analytics • Factor Research",
+        "color": "#10B981",
+    },
+    {
+        "icon": "🔮",
+        "title": "Forecasting & Machine Learning",
+        "desc": "Compare ARIMA, tree-ensemble, LSTM/GRU and reinforcement-learning models with out-of-sample validation and a Bullish / Bearish / Neutral outlook.",
+        "modules": "Time Series • ML Forecasting • DL Forecasting • RL Trading",
+        "color": "#F59E0B",
+    },
+    {
+        "icon": "🎓",
+        "title": "Learning & Academic Projects",
+        "desc": "Study quantitative finance concepts hands-on, with transparent methodology and exportable 20-page research reports for coursework.",
+        "modules": "Statistical Analysis • Regime Detection • Report Generation",
+        "color": "#06B6D4",
+    },
+]
+
+for row_start in range(0, len(USE_CASES), 3):
+    uc_cols = st.columns(3)
+    for col, uc in zip(uc_cols, USE_CASES[row_start:row_start + 3]):
+        with col:
+            st.markdown(
+                f"""
+                <div style="background: rgba(15, 23, 42, 0.75); border: 1px solid rgba(255, 255, 255, 0.08); border-top: 3px solid {uc['color']}; border-radius: 12px; padding: 18px; min-height: 210px; box-sizing: border-box; margin-bottom: 14px; box-shadow: 0 4px 20px rgba(0,0,0,0.25);">
+                    <div style="font-size: 1.05rem; font-weight: 700; color: #F8FAFC; margin-bottom: 8px;">{uc['icon']} {uc['title']}</div>
+                    <div style="font-size: 0.84rem; color: #94A3B8; line-height: 1.5; margin-bottom: 12px;">{uc['desc']}</div>
+                    <div style="font-size: 0.74rem; color: {uc['color']}; font-weight: 600;">{uc['modules']}</div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
+st.markdown("<div style='height: 24px;'></div>", unsafe_allow_html=True)
+
+# =============================================================================
+# 14. Institutional Reporting Spotlight
 # =============================================================================
 st.markdown("""
 <div style="background: linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(15, 23, 42, 0.9) 100%); border: 1px solid rgba(6, 182, 212, 0.35); border-radius: 16px; padding: 28px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35); margin-bottom: 24px;">
@@ -1302,7 +1375,7 @@ with col_cred_btn:
 st.markdown("<div style='height: 24px;'></div>", unsafe_allow_html=True)
 
 # =============================================================================
-# 14. Professional Footer
+# 15. Professional Footer
 # =============================================================================
 st.markdown("""
 <div style="border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 20px; margin-top: 20px; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: #64748B; flex-wrap: wrap; gap: 12px;">
@@ -1318,3 +1391,5 @@ st.markdown("""
     </div>
 </div>
 """, unsafe_allow_html=True)
+
+render_disclaimer_footer()

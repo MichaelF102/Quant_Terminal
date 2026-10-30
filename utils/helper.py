@@ -500,3 +500,21 @@ def _get(d: dict, *keys, default=None):
             return default
         cur = cur.get(k, None)
     return cur if cur not in (None, "None", "") else default
+
+
+DISCLAIMER_TEXT = (
+    "This dashboard is for educational purposes only. We are not liable for any "
+    "investment decisions made by users."
+)
+
+
+def render_disclaimer_footer():
+    """Render the standard educational-use disclaimer footer shown on every page."""
+    st.markdown(
+        f"""
+        <div style="border-top: 1px solid rgba(255, 255, 255, 0.08); margin-top: 28px; padding: 14px 4px 6px 4px; text-align: center; color: #64748B; font-size: 0.78rem; line-height: 1.5;">
+            <b style="color: #94A3B8;">⚠️ Disclaimer:</b> {DISCLAIMER_TEXT}
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )

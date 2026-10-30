@@ -1564,11 +1564,11 @@ with tab_perf:
             s_y = [eq_series.asof(d) for d in s_dates]
 
             fig_peq.add_trace(go.Scatter(
-                x=b_dates, y=b_y, mode="markers", name="Buy Signal",
+                x=b_dates, y=b_y, mode="markers", name="Bullish Signal",
                 marker=dict(symbol="triangle-up", color="#00E676", size=9)
             ))
             fig_peq.add_trace(go.Scatter(
-                x=s_dates, y=s_y, mode="markers", name="Sell Signal",
+                x=s_dates, y=s_y, mode="markers", name="Bearish Signal",
                 marker=dict(symbol="triangle-down", color="#F43F5E", size=9)
             ))
 
@@ -2104,3 +2104,7 @@ with tab_compare:
 # Footer
 # ---------------------------------------------------------
 st.markdown("<div style='text-align: center; margin-top: 25px; color: #64748B; font-size: 0.76rem;'><i>QuantTerminal Backtesting Lab • Institutional quantitative research & strategy verification suite. Not financial advice.</i></div>", unsafe_allow_html=True)
+
+# Standard disclaimer footer
+from utils.helper import render_disclaimer_footer
+render_disclaimer_footer()

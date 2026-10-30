@@ -348,4 +348,6 @@ def render_page() -> None:
 
 
 if __name__ == "__main__":
+    from utils.helper import render_disclaimer_footer
     render_page()
+    render_disclaimer_footer()

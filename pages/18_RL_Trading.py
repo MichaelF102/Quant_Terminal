@@ -3,11 +3,11 @@ Institutional Reinforcement Learning Trading Terminal for QuantTerminal.
 Powered by TensorTrade (1.0.4) & Deep Neural Network Agents:
 - TensorTrade OMS Architecture: Simulated Exchange, Wallets, Portfolio, and DataFeed
 - Technical Feature Stream Pipeline: Price, Return, SMA Ratio, RSI, MACD, and Volume
-- Configurable Action Schemes: Discrete proportional allocation (Buy / Hold / Sell)
+- Configurable Action Schemes: Discrete proportional allocation (Bullish / Neutral / Bearish)
 - Configurable Reward Schemes: Simple PnL, Risk-Adjusted Returns (Sortino/Sharpe), and Position-Based Returns (PBR)
 - Deep RL Agent: Deep Q-Network (DQN) with Replay Buffer, Target Network, and Epsilon-Greedy Schedule
 - 8-Tab Institutional Modular Suite:
-    1. 🎮 Training Workbench & Real-Time Telemetry
+    1. 🎮 Training Workbench & Market Data Telemetry
     2. 📈 Out-of-Sample Validation & Equity Curve
     3. 🎯 Policy Execution Markers & Action Distribution
     4. 🧠 Q-Value Surface & State-Action Inspection
@@ -1157,27 +1157,27 @@ if st.session_state["rl_trained"] and st.session_state["rl_oos_res"] is not None
             disagree = abs(q1_f - q2_f)
             alpha_curr = float(st.session_state["rl_q_net"].alpha)
             with c_sig1:
-                st.info(f"⚡ **Real-Time SAC Maximum Entropy Allocation (Latest Bar):** **{w_pct:.1f}% Equity / {100.0 - w_pct:.1f}% Cash** | Twin Q1: `{currency_sym}{q1_f:,.2f}` | Q2: `{currency_sym}{q2_f:,.2f}` | Status: {'🚨 LIQUIDATED BY KILL-SWITCH' if emergency_kill_switch else '🟢 ACTIVE'}")
+                st.info(f"⚡ **Market Data SAC Maximum Entropy Allocation (Latest Bar):** **{w_pct:.1f}% Equity / {100.0 - w_pct:.1f}% Cash** | Twin Q1: `{currency_sym}{q1_f:,.2f}` | Q2: `{currency_sym}{q2_f:,.2f}` | Status: {'🚨 LIQUIDATED BY KILL-SWITCH' if emergency_kill_switch else '🟢 ACTIVE'}")
             with c_sig2:
-                order_hint = "BUY / ACCUMULATE" if live_w > 0.55 else ("SELL / REDUCE" if live_w < 0.45 else "HOLD / REBALANCE")
+                order_hint = "BULLISH" if live_w > 0.55 else ("BEARISH" if live_w < 0.45 else "NEUTRAL")
                 st.caption(rf"**SAC Entropy Temp:** $\alpha={alpha_curr:.3f}$ | Critic Disagreement: $\Delta Q={disagree:.3f}$ | Signal: **{order_hint}**")
         elif is_ppo_active:
             live_w, _, live_v = st.session_state["rl_q_net"].get_action(curr_feat, deterministic=True)
             w_pct = live_w * 100.0
             with c_sig1:
-                st.info(f"⚡ **Real-Time PPO Target Allocation (Latest Bar):** **{w_pct:.1f}% Equity / {100.0 - w_pct:.1f}% Cash** | State Value: `{currency_sym}{live_v:,.2f}` | Status: {'🚨 LIQUIDATED BY KILL-SWITCH' if emergency_kill_switch else '🟢 ACTIVE'}")
+                st.info(f"⚡ **Market Data PPO Target Allocation (Latest Bar):** **{w_pct:.1f}% Equity / {100.0 - w_pct:.1f}% Cash** | State Value: `{currency_sym}{live_v:,.2f}` | Status: {'🚨 LIQUIDATED BY KILL-SWITCH' if emergency_kill_switch else '🟢 ACTIVE'}")
             with c_sig2:
-                order_hint = "BUY / ACCUMULATE" if live_w > 0.55 else ("SELL / REDUCE" if live_w < 0.45 else "HOLD / REBALANCE")
+                order_hint = "BULLISH" if live_w > 0.55 else ("BEARISH" if live_w < 0.45 else "NEUTRAL")
                 st.caption(rf"**Policy Distribution:** $\mu={live_w:.3f}$ | Signal: **{order_hint}**")
         else:
             live_q = st.session_state["rl_q_net"].forward(curr_feat).flatten()
             live_act = int(np.argmax(live_q))
-            act_labels = {0: "HOLD (Cash / Neutral)", 1: "BUY (Long Allocation)", 2: "SELL / FLAT (Stay in Cash)"}
+            act_labels = {0: "NEUTRAL (Cash)", 1: "BULLISH (Long Allocation)", 2: "BEARISH (Flat / Cash)"}
             q_conf = float(np.max(live_q) - np.sort(live_q)[-2])
             with c_sig1:
-                st.info(f"⚡ **Real-Time RL Policy Signal (Latest Bar):** **{act_labels[live_act]}** | Confidence Margin: `+{q_conf:.4f}` | Status: {'🚨 LIQUIDATED BY KILL-SWITCH' if emergency_kill_switch else '🟢 ACTIVE'}")
+                st.info(f"⚡ **Market Data RL Policy Signal (Latest Bar):** **{act_labels[live_act]}** | Confidence Margin: `+{q_conf:.4f}` | Status: {'🚨 LIQUIDATED BY KILL-SWITCH' if emergency_kill_switch else '🟢 ACTIVE'}")
             with c_sig2:
-                st.caption(f"**Q-Values on Current State:** Q(Hold)=`{live_q[0]:.3f}` | Q(Buy)=`{live_q[1]:.3f}` | Q(Sell)=`{live_q[2]:.3f}`")
+                st.caption(f"**Q-Values on Current State:** Q(Neutral)=`{live_q[0]:.3f}` | Q(Bullish)=`{live_q[1]:.3f}` | Q(Bearish)=`{live_q[2]:.3f}`")
 
     st.markdown("---")
 
@@ -1328,7 +1328,7 @@ with tab_actions:
         p_dates = oos["equity"].index[:len(act_arr)]
         p_closes = df_test["Close"].loc[p_dates]
 
-        # Buy and Sell markers
+        # Bullish and Bearish markers
         buy_mask = np.array(act_arr) == 1
         sell_mask = np.array(act_arr) == 2
 
@@ -1336,9 +1336,9 @@ with tab_actions:
         fig_act.add_trace(go.Scatter(x=p_dates, y=p_closes.values, mode="lines", line=dict(color="#94A3B8", width=1.4), name="Close Price"))
         
         if np.any(buy_mask):
-            fig_act.add_trace(go.Scatter(x=p_dates[buy_mask], y=p_closes.values[buy_mask], mode="markers", marker=dict(symbol="triangle-up", color="#00E676", size=9), name="Buy Order"))
+            fig_act.add_trace(go.Scatter(x=p_dates[buy_mask], y=p_closes.values[buy_mask], mode="markers", marker=dict(symbol="triangle-up", color="#00E676", size=9), name="Bullish Signal"))
         if np.any(sell_mask):
-            fig_act.add_trace(go.Scatter(x=p_dates[sell_mask], y=p_closes.values[sell_mask], mode="markers", marker=dict(symbol="triangle-down", color="#FF5252", size=9), name="Sell / Flat Order"))
+            fig_act.add_trace(go.Scatter(x=p_dates[sell_mask], y=p_closes.values[sell_mask], mode="markers", marker=dict(symbol="triangle-down", color="#FF5252", size=9), name="Bearish / Flat Signal"))
 
         fig_act.update_layout(template="plotly_dark", height=420, title="Executed Orders Along Out-of-Sample Price Path", yaxis=dict(title=f"Price ({currency_sym})"))
         st.plotly_chart(fig_act, width="stretch")
@@ -1349,9 +1349,9 @@ with tab_actions:
         c_n_hold = len(act_arr) - c_n_buy - c_n_sell
         
         df_dist = pd.DataFrame([
-            {"Action": "Buy (Long)", "Count": c_n_buy, "Percentage": f"{c_n_buy/len(act_arr)*100:.1f}%"},
-            {"Action": "Sell / Flat", "Count": c_n_sell, "Percentage": f"{c_n_sell/len(act_arr)*100:.1f}%"},
-            {"Action": "Hold (Neutral)", "Count": c_n_hold, "Percentage": f"{c_n_hold/len(act_arr)*100:.1f}%"}
+            {"Action": "Bullish (Long)", "Count": c_n_buy, "Percentage": f"{c_n_buy/len(act_arr)*100:.1f}%"},
+            {"Action": "Bearish / Flat", "Count": c_n_sell, "Percentage": f"{c_n_sell/len(act_arr)*100:.1f}%"},
+            {"Action": "Neutral", "Count": c_n_hold, "Percentage": f"{c_n_hold/len(act_arr)*100:.1f}%"}
         ])
 
         c_ad1, c_ad2 = st.columns(2)
@@ -1447,9 +1447,9 @@ with tab_qval:
                 surface_vals,
                 x=[f"{r:.1f}" for r in rsi_grid],
                 y=[f"{s*100:.1f}%" for s in sma_grid],
-                labels=dict(x="RSI State (Normalized -1 to +1)", y="SMA Ratio (Trend Momentum)", color="Q(Buy) - Q(Sell)"),
+                labels=dict(x="RSI State (Normalized -1 to +1)", y="SMA Ratio (Trend Momentum)", color="Q(Bullish) - Q(Bearish)"),
                 color_continuous_scale="RdYlGn",
-                title="Q-Network Preference: Q(Buy) - Q(Sell) Advantage Spread"
+                title="Q-Network Preference: Q(Bullish) - Q(Bearish) Advantage Spread"
             )
             st.plotly_chart(fig_surf, width="stretch")
             st.caption("💡 **Interpretation:** Green regions indicate states where the Q-network prefers taking a Long position. Red regions indicate states where the agent favors selling or staying in cash.")
@@ -1551,7 +1551,7 @@ with tab_method:
         > $$\mathcal{M} = (\mathcal{S}, \mathcal{A}, \mathcal{P}, \mathcal{R}, \gamma)$$
         >
         > - **State Space $\mathcal{S} \in \mathbb{R}^6$:** Price relative to moving average, log return, SMA trend spread, normalized RSI, MACD signal, and volume ratio.
-        > - **Action Space $\mathcal{A} = \{0, 1, 2\}$:** `0: Hold/Cash`, `1: Buy (Long Allocation)`, `2: Sell (Flat/Short)`.
+        > - **Action Space $\mathcal{A} = \{0, 1, 2\}$:** `0: Neutral/Cash`, `1: Bullish (Long Allocation)`, `2: Bearish (Flat/Short)`.
         > - **Transition Probability $\mathcal{P}(s_{t+1} | s_t, a_t)$:** Market price dynamics governed by stochastic asset order flow.
         > - **Reward $\mathcal{R}(s_t, a_t)$:** Portfolio value change minus transaction execution slippage.
         > - **Discount Factor $\gamma \in [0, 1)$:** Balances immediate profits vs. long-term portfolio growth.
@@ -1623,7 +1623,7 @@ with tab_method:
         1. **`Instrument`**: Defines tradable assets (`USD`, `INR`, `STOCK`).
         2. **`Exchange`**: Simulates order matching, latency, and fills (`execute_order`).
         3. **`Wallet` & `Portfolio`**: Manages cash balances, equity allocations, and net worth accounting.
-        4. **`DataFeed`**: Lazily evaluates real-time feature streams (`Stream.source(...)`).
+        4. **`DataFeed`**: Lazily evaluates market data feature streams (`Stream.source(...)`).
         5. **`ActionScheme`**: Maps neural network actions into broker orders (`BSH`, `SimpleOrders`).
         6. **`RewardScheme`**: Translates portfolio transitions into numerical learning signals (`SimpleProfit`, `RiskAdjustedReturns`).
         """)
@@ -1640,11 +1640,11 @@ with tab_exports:
         p_dates = oos["equity"].index[:len(act_arr)]
         p_closes = df_test["Close"].loc[p_dates].values
 
-        action_names = {0: "HOLD", 1: "BUY", 2: "SELL"}
+        action_names = {0: "NEUTRAL", 1: "BULLISH", 2: "BEARISH"}
         df_order_log = pd.DataFrame({
             "Date": [d.strftime("%Y-%m-%d") for d in p_dates],
             "Close_Price": [f"{currency_sym}{p:,.2f}" for p in p_closes],
-            "Policy_Action": [action_names.get(a, "HOLD") for a in act_arr],
+            "Policy_Action": [action_names.get(a, "NEUTRAL") for a in act_arr],
             "Portfolio_Net_Worth": [f"{currency_sym}{nw:,.2f}" for nw in oos["equity"].values[:len(act_arr)]]
         })
 
@@ -1679,3 +1679,7 @@ with tab_exports:
 
 st.markdown("---")
 st.markdown("<div style='text-align: center; margin-top: 15px; color: #64748B; font-size: 0.78rem;'><i>QuantTerminal RL Engine • Powered by TensorTrade OMS. Deep Reinforcement Learning. Not financial advice.</i></div>", unsafe_allow_html=True)
+
+# Standard disclaimer footer
+from utils.helper import render_disclaimer_footer
+render_disclaimer_footer()

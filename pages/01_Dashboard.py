@@ -1,7 +1,7 @@
 """QuantTerminal — Institutional Equity Research Dashboard.
 
 A high-density quantitative equity research terminal featuring:
-- Live Market Quotes, OHLCV Candlesticks & Technical Overlays
+- Market Data Quotes, OHLCV Candlesticks & Technical Overlays
 - Multi-horizon CAGR Returns & Quantitative Risk Analytics
 - Technical Regime & Momentum Diagnostics
 - Fundamental Statements Suite (Quarterly, Annual P&L, Balance Sheet, Cash Flow, Ratios)
@@ -378,7 +378,7 @@ st.markdown(
             </div>
             <div style="display:flex; align-items:center; gap:8px;">
                 <span style="background:rgba(16, 185, 129, 0.12); color:#10B981; border:1px solid rgba(16, 185, 129, 0.3); font-size:0.75rem; font-weight:700; padding:4px 10px; border-radius:12px; letter-spacing:0.04em;">
-                    ● REAL-TIME CONNECTED
+                    ● MARKET DATA CONNECTED
                 </span>
             </div>
         </div>
@@ -572,7 +572,7 @@ if curr_price is None:
                 <span style="font-size:1.1rem; font-weight:700; color:#F43F5E;">Market Data Unavailable for '{ticker}'</span>
             </div>
             <p style="color:#CBD5E1; font-size:0.88rem; margin:0 0 12px 0; line-height:1.5;">
-                Unable to retrieve real-time quotes or price history from Yahoo Finance and TradingView for <b>{ticker}</b>.
+                Unable to retrieve market data quotes or price history from Yahoo Finance and TradingView for <b>{ticker}</b>.
                 This usually occurs if the symbol is delisted, typed incorrectly, or temporarily rate-limited.
             </p>
             <div style="color:#94A3B8; font-size:0.82rem;">
@@ -2763,3 +2763,7 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
+
+# Standard disclaimer footer
+from utils.helper import render_disclaimer_footer
+render_disclaimer_footer()

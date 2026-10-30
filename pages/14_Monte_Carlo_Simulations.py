@@ -2242,3 +2242,7 @@ with c_dl1:
     )
 
 st.markdown("<div style='text-align: center; margin-top: 15px; color: #64748B; font-size: 0.78rem;'><i>QuantTerminal Monte Carlo Engine • Stochastic numerical simulations for institutional quantitative research. Not investment advice.</i></div>", unsafe_allow_html=True)
+
+# Standard disclaimer footer
+from utils.helper import render_disclaimer_footer
+render_disclaimer_footer()

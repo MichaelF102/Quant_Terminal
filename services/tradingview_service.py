@@ -1,6 +1,6 @@
 """TradingView Screener Adapter for QuantTerminal.
 
-Fetches real-time sector/industry classifications, market classification,
+Fetches market data sector/industry classifications, market classification,
 valuation multiples, and TradingView technical fields.
 """
 

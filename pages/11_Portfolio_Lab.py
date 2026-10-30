@@ -1938,11 +1938,11 @@ def render_page():
             diff_w = t_w - c_w
 
             if abs(diff_w) < min_trade_thresh:
-                action = "⚪ HOLD (< Thresh)"
+                action = "⚪ NEUTRAL (< Thresh)"
                 trade_val = 0.0
             else:
                 trade_val = (diff_w / 100.0) * tot_v
-                action = f"🟢 BUY {fmt_inr(trade_val)}" if trade_val > 0 else f"🔴 SELL {fmt_inr(abs(trade_val))}"
+                action = f"🟢 BULLISH (Overweight {fmt_inr(trade_val)})" if trade_val > 0 else f"🔴 BEARISH (Underweight {fmt_inr(abs(trade_val))})"
 
             rebal_orders.append({
                 "Asset": t,
@@ -2003,4 +2003,6 @@ def render_page():
 
 
 if __name__ == "__main__":
+    from utils.helper import render_disclaimer_footer
     render_page()
+    render_disclaimer_footer()

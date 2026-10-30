@@ -2,7 +2,7 @@
 Market Regime Detection Dashboard for QuantTerminal.
 Institutional quantitative predictive analytics terminal incorporating:
 - Multivariate Hidden Markov Models (HMM) & Gaussian Mixture Models (GMM)
-- Real-time regime classification (Return, Volatility, Volume, and Momentum feature spaces)
+- Market data regime classification (Return, Volatility, Volume, and Momentum feature spaces)
 - Dynamic Regime-Switching Strategy Execution Backtester with realistic frictions
 - Regime-Conditioned Risk Management (Parametric & Historical VaR 95/99%, CVaR, Vol-Targeting)
 - Multi-Step Markov Chain Forward Forecasting (P^k projections & Ergodic Stationary Equilibrium)
@@ -1429,3 +1429,7 @@ if ref_states is not None:
     )
 
 st.markdown("<div style='text-align: center; margin-top: 15px; color: #64748B; font-size: 0.78rem;'><i>QuantTerminal Regime Engine • Statistical classifications derived from historical data. Not investment advice.</i></div>", unsafe_allow_html=True)
+
+# Standard disclaimer footer
+from utils.helper import render_disclaimer_footer
+render_disclaimer_footer()

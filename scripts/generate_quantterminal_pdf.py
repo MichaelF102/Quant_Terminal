@@ -636,7 +636,7 @@ def build_quantterminal_pdf(output_filename="QuantTerminal_System_Documentation.
 
     story.append(Paragraph("7.3 5-View Evaluation Suite & Macro Stress Sandbox", h2_style))
     story.append(Paragraph(
-        "• <b>Ranked Scorecard:</b> Real-time sorting across IC, Rank IC, Hit Rate, Sharpe, Sortino, RMSE, and MAE.<br/>"
+        "• <b>Ranked Scorecard:</b> Market data sorting across IC, Rank IC, Hit Rate, Sharpe, Sortino, RMSE, and MAE.<br/>"
         "• <b>360° Multi-Metric Radar:</b> Multi-axis polygon overlay evaluating correlation, directional edge, precision, and efficiency.<br/>"
         "• <b>Alpha vs Risk Pareto Frontier:</b> Scatter plot of RMSE vs IC tracing empirical non-dominated Pareto-optimal models.<br/>"
         "• <b>Counterfactual Macro Sandbox:</b> Simulates surprise rate hikes (-2.5% market, +40% vol) and geopolitical volatility shocks.",

@@ -1400,3 +1400,7 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
+
+# Standard disclaimer footer
+from utils.helper import render_disclaimer_footer
+render_disclaimer_footer()

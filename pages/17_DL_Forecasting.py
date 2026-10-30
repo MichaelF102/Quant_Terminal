@@ -1157,3 +1157,7 @@ with tab_math:
 
 st.markdown("---")
 st.caption("QuantTerminal Deep Learning Forecasting Dashboard • Powered by ml_dl Recurrent Framework & YFinance")
+
+# Standard disclaimer footer
+from utils.helper import render_disclaimer_footer
+render_disclaimer_footer()

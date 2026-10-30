@@ -39,7 +39,7 @@ map naturally into six capability clusters:
 Two ideas carry across the whole platform and are worth highlighting:
 
 - **Confidence at every step.** Each result is tagged with where its data came from —
-  live market feed, reference snapshot, or unavailable (🟢 / 🟡 / 🔴). The user always
+  market data feed, reference snapshot, or unavailable (🟢 / 🟡 / 🔴). The user always
   knows how much to trust a number.
 - **Global by default.** Indian (NSE/BSE) and international symbols, currencies, and
   forex pairs are supported side-by-side, with portfolio values standardised to one base
