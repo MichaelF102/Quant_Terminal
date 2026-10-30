@@ -941,96 +941,105 @@ with f_header_r:
 
 feat_cols = st.columns(5)
 
-# Vector SVG graphics for the 5 featured cards
-SVG_MARKET = """
+# Vector SVG placeholders for the 5 featured cards
+SVG_REGIME = """
 <svg viewBox="0 0 200 80" width="100%" height="80" xmlns="http://www.w3.org/2000/svg">
-  <line x1="20" y1="20" x2="20" y2="60" stroke="#00E676" stroke-width="1.5"/>
-  <rect x="15" y="30" width="10" height="20" fill="#00E676"/>
-  <line x1="50" y1="15" x2="50" y2="65" stroke="#FF5252" stroke-width="1.5"/>
-  <rect x="45" y="25" width="10" height="25" fill="#FF5252"/>
-  <line x1="80" y1="10" x2="80" y2="55" stroke="#00E676" stroke-width="1.5"/>
-  <rect x="75" y="18" width="10" height="22" fill="#00E676"/>
-  <line x1="110" y1="25" x2="110" y2="70" stroke="#00E676" stroke-width="1.5"/>
-  <rect x="105" y="32" width="10" height="20" fill="#00E676"/>
-  <line x1="140" y1="10" x2="140" y2="60" stroke="#FF5252" stroke-width="1.5"/>
-  <rect x="135" y="15" width="10" height="30" fill="#FF5252"/>
-  <line x1="170" y1="5" x2="170" y2="50" stroke="#00E676" stroke-width="1.5"/>
-  <rect x="165" y="12" width="10" height="25" fill="#00E676"/>
-  <path d="M 15 45 Q 60 15 110 40 T 180 15" fill="none" stroke="#38BDF8" stroke-width="2"/>
+  <rect x="5" y="5" width="60" height="70" fill="rgba(16, 185, 129, 0.18)"/>
+  <rect x="65" y="5" width="55" height="70" fill="rgba(239, 68, 68, 0.18)"/>
+  <rect x="120" y="5" width="75" height="70" fill="rgba(56, 189, 248, 0.15)"/>
+  <path d="M 8 55 L 25 40 L 40 45 L 62 20 L 80 40 L 95 62 L 118 70 L 135 50 L 160 38 L 192 22" fill="none" stroke="#F8FAFC" stroke-width="2"/>
+  <text x="14" y="16" fill="#10B981" font-size="8" font-family="sans-serif" font-weight="bold">BULL</text>
+  <text x="76" y="16" fill="#EF4444" font-size="8" font-family="sans-serif" font-weight="bold">BEAR</text>
+  <text x="140" y="16" fill="#38BDF8" font-size="8" font-family="sans-serif" font-weight="bold">CALM</text>
 </svg>
 """
 
-SVG_FORECAST = """
+SVG_STRATEGY = """
 <svg viewBox="0 0 200 80" width="100%" height="80" xmlns="http://www.w3.org/2000/svg">
-  <path d="M 10 55 L 35 48 L 60 52 L 85 38 L 110 42 L 130 35" fill="none" stroke="#F8FAFC" stroke-width="2"/>
-  <line x1="130" y1="10" x2="130" y2="70" stroke="#EF4444" stroke-width="1.5" stroke-dasharray="3,3"/>
-  <polygon points="130,35 190,12 190,62" fill="rgba(56, 189, 248, 0.25)"/>
-  <path d="M 130 35 L 190 35" fill="none" stroke="#38BDF8" stroke-width="2" stroke-dasharray="4,4"/>
+  <path d="M 10 60 L 40 50 L 70 55 L 100 35 L 130 40 L 160 22 L 190 28" fill="none" stroke="#94A3B8" stroke-width="2"/>
+  <polygon points="40,66 34,76 46,76" fill="#00E676"/>
+  <polygon points="130,28 124,18 136,18" fill="#FF5252"/>
+  <polygon points="100,46 94,56 106,56" fill="#00E676" transform="translate(0,12)"/>
+  <rect x="150" y="50" width="10" height="20" fill="#A855F7"/>
+  <rect x="164" y="40" width="10" height="30" fill="#38BDF8"/>
+  <rect x="178" y="30" width="10" height="40" fill="#10B981"/>
 </svg>
 """
 
-SVG_MONTE_CARLO = """
+SVG_ML = """
 <svg viewBox="0 0 200 80" width="100%" height="80" xmlns="http://www.w3.org/2000/svg">
-  <path d="M 10 40 Q 60 38 100 35 T 190 10" fill="none" stroke="#A855F7" stroke-width="1.2" opacity="0.8"/>
-  <path d="M 10 40 Q 60 42 100 32 T 190 22" fill="none" stroke="#38BDF8" stroke-width="1.2" opacity="0.8"/>
-  <path d="M 10 40 Q 60 40 100 42 T 190 38" fill="none" stroke="#10B981" stroke-width="2"/>
-  <path d="M 10 40 Q 60 39 100 48 T 190 58" fill="none" stroke="#F59E0B" stroke-width="1.2" opacity="0.8"/>
-  <path d="M 10 40 Q 60 45 100 55 T 190 72" fill="none" stroke="#EF4444" stroke-width="1.2" opacity="0.8"/>
+  <rect x="12" y="12" width="70" height="8" rx="2" fill="#38BDF8"/>
+  <rect x="12" y="26" width="52" height="8" rx="2" fill="#38BDF8" opacity="0.8"/>
+  <rect x="12" y="40" width="38" height="8" rx="2" fill="#38BDF8" opacity="0.6"/>
+  <rect x="12" y="54" width="22" height="8" rx="2" fill="#38BDF8" opacity="0.4"/>
+  <path d="M 100 62 L 120 50 L 140 54 L 160 36 L 190 26" fill="none" stroke="#F8FAFC" stroke-width="2"/>
+  <path d="M 100 66 L 120 54 L 140 50 L 160 40 L 190 30" fill="none" stroke="#F59E0B" stroke-width="2" stroke-dasharray="4,3"/>
 </svg>
 """
 
-SVG_BACKTEST = """
+SVG_DL = """
 <svg viewBox="0 0 200 80" width="100%" height="80" xmlns="http://www.w3.org/2000/svg">
-  <path d="M 10 65 L 45 60 L 80 50 L 115 52 L 150 42 L 190 45" fill="none" stroke="#64748B" stroke-width="1.5" stroke-dasharray="2,2"/>
-  <path d="M 10 65 L 45 52 L 80 52 L 105 38 L 140 28 L 170 30 L 190 15" fill="none" stroke="#00E676" stroke-width="2.2"/>
-  <circle cx="190" cy="15" r="3.5" fill="#00E676"/>
+  <g stroke="rgba(148, 163, 184, 0.5)" stroke-width="0.8">
+    <line x1="30" y1="20" x2="90" y2="14"/><line x1="30" y1="20" x2="90" y2="40"/><line x1="30" y1="20" x2="90" y2="66"/>
+    <line x1="30" y1="40" x2="90" y2="14"/><line x1="30" y1="40" x2="90" y2="40"/><line x1="30" y1="40" x2="90" y2="66"/>
+    <line x1="30" y1="60" x2="90" y2="14"/><line x1="30" y1="60" x2="90" y2="40"/><line x1="30" y1="60" x2="90" y2="66"/>
+    <line x1="90" y1="14" x2="150" y2="40"/><line x1="90" y1="40" x2="150" y2="40"/><line x1="90" y1="66" x2="150" y2="40"/>
+  </g>
+  <circle cx="30" cy="20" r="5" fill="#38BDF8"/><circle cx="30" cy="40" r="5" fill="#38BDF8"/><circle cx="30" cy="60" r="5" fill="#38BDF8"/>
+  <circle cx="90" cy="14" r="5" fill="#A855F7"/><circle cx="90" cy="40" r="5" fill="#A855F7"/><circle cx="90" cy="66" r="5" fill="#A855F7"/>
+  <circle cx="150" cy="40" r="6" fill="#10B981"/>
+  <path d="M 162 40 L 192 40" stroke="#10B981" stroke-width="2" stroke-dasharray="4,3"/>
 </svg>
 """
 
-SVG_RISK = """
+SVG_RL = """
 <svg viewBox="0 0 200 80" width="100%" height="80" xmlns="http://www.w3.org/2000/svg">
-  <path d="M 10 70 Q 50 68 80 45 Q 110 10 130 10 Q 150 10 180 45 Q 195 65 200 70" fill="none" stroke="#38BDF8" stroke-width="2"/>
-  <path d="M 10 70 Q 50 68 65 58 L 65 70 Z" fill="rgba(239, 68, 68, 0.45)"/>
-  <line x1="65" y1="20" x2="65" y2="70" stroke="#EF4444" stroke-width="1.5" stroke-dasharray="3,3"/>
-  <text x="70" y="30" fill="#EF4444" font-size="9" font-family="sans-serif" font-weight="bold">95% VaR</text>
+  <rect x="12" y="26" width="52" height="28" rx="5" fill="rgba(168, 85, 247, 0.25)" stroke="#A855F7"/>
+  <text x="38" y="44" fill="#F8FAFC" font-size="9" font-family="sans-serif" text-anchor="middle" font-weight="bold">AGENT</text>
+  <rect x="136" y="26" width="52" height="28" rx="5" fill="rgba(56, 189, 248, 0.25)" stroke="#38BDF8"/>
+  <text x="162" y="44" fill="#F8FAFC" font-size="9" font-family="sans-serif" text-anchor="middle" font-weight="bold">MARKET</text>
+  <path d="M 64 34 L 134 34" stroke="#10B981" stroke-width="1.8"/><polygon points="134,30 142,34 134,38" fill="#10B981"/>
+  <path d="M 136 48 L 66 48" stroke="#F59E0B" stroke-width="1.8"/><polygon points="66,44 58,48 66,52" fill="#F59E0B"/>
+  <text x="100" y="28" fill="#10B981" font-size="7" font-family="sans-serif" text-anchor="middle">action</text>
+  <text x="100" y="62" fill="#F59E0B" font-size="7" font-family="sans-serif" text-anchor="middle">state + reward</text>
 </svg>
 """
 
 FEATURED_ITEMS = [
     {
-        "title": "Market Explorer",
-        "desc": "Interactive market data analysis with advanced charting and fundamental screener.",
-        "tags": ["Market", "Charts", "Data"],
-        "svg": SVG_MARKET,
-        "target": "pages/02_Market_Explorer.py",
+        "title": "Regime Detection",
+        "desc": "Gaussian Hidden Markov Models for identifying latent market regimes and volatility shifts.",
+        "tags": ["HMM", "Regimes", "Volatility"],
+        "svg": SVG_REGIME,
+        "target": "pages/06_Regime_Detection.py",
     },
     {
-        "title": "Time Series Forecasting",
-        "desc": "ARIMA, SARIMA and classical econometric time-series models with forecast bounds.",
-        "tags": ["ARIMA", "Forecast", "Econometrics"],
-        "svg": SVG_FORECAST,
-        "target": "pages/15_Time_Series_Forecasting.py",
+        "title": "Strategy Lab",
+        "desc": "Algorithmic strategy research, composite logic builder, and tournament ranking.",
+        "tags": ["Strategy", "Tournament", "Optimization"],
+        "svg": SVG_STRATEGY,
+        "target": "pages/08_Strategy_Lab.py",
     },
     {
-        "title": "Monte Carlo Simulations",
-        "desc": "Stochastic simulation, future path analysis, and empirical probability bounds.",
-        "tags": ["Simulation", "VaR", "CVaR"],
-        "svg": SVG_MONTE_CARLO,
-        "target": "pages/14_Monte_Carlo_Simulations.py",
+        "title": "ML Forecasting",
+        "desc": "Tree ensembles and non-linear regressors with feature engineering and out-of-sample validation.",
+        "tags": ["XGBoost", "Ensembles", "OOS"],
+        "svg": SVG_ML,
+        "target": "pages/16_ML_Forecasting.py",
     },
     {
-        "title": "Backtesting",
-        "desc": "Strategy backtesting with friction modeling, trade logs, and risk teardowns.",
-        "tags": ["Strategy", "Performance", "Risk"],
-        "svg": SVG_BACKTEST,
-        "target": "pages/10_Backtesting.py",
+        "title": "DL Forecasting",
+        "desc": "LSTM and GRU sequence networks for high-order temporal forecasting dashboards.",
+        "tags": ["LSTM", "GRU", "Neural Nets"],
+        "svg": SVG_DL,
+        "target": "pages/17_DL_Forecasting.py",
     },
     {
-        "title": "Risk Analytics",
-        "desc": "VaR, CVaR, underwater drawdown anatomy, and historical stress tests.",
-        "tags": ["Risk", "VaR", "Drawdown"],
-        "svg": SVG_RISK,
-        "target": "pages/13_Risk_Analytics.py",
+        "title": "RL Trading",
+        "desc": "Reinforcement learning agents trained in simulated market environments with an OMS.",
+        "tags": ["DQN", "PPO", "TensorTrade"],
+        "svg": SVG_RL,
+        "target": "pages/18_RL_Trading.py",
     },
 ]
 
